@@ -1,30 +1,33 @@
-/*
- * quiz.js: client-side rendering for simple js quiz
+/**
+ * File: quiz.js:
+ * Desc: client-side rendering to a mount-point
  */
-(function() {
-  // all code inside an iife to not pollute the global namespace at all
 
+// IIFE container for code : avoiding the global namespace
+
+(function () {
   'use strict';
 
-  // Data - if this were React would be local component state - here: pretty clever json
+  // 1- Rep the Data - if this were React would be local component state - here: pretty clever json
+  // TODO: move this to external mock-data file for easier switchout for quiz #2
   const quizQuestions = [
     {
       question: 'Who is the strongest?',
       answers: {
         a: 'Superman',
         b: 'The Terminator',
-        c: 'Waluigi, obviously'
+        c: 'Waluigi, obviously',
       },
-      correctAnswer: 'c'
+      correctAnswer: 'c',
     },
     {
       question: 'What is the best site ever?',
       answers: {
         a: 'Sitepoint',
         b: 'Simple steps code',
-        c: 'Trick question: all the best'
+        c: 'Trick question: all the best',
       },
-      correctAnswer: 'c'
+      correctAnswer: 'c',
     },
     {
       question: 'Where is Waldo really',
@@ -32,9 +35,9 @@
         a: 'Antarctica',
         b: 'Exploring the Pacific',
         c: 'Sitting in a tree',
-        d: 'Minding his own business, so stap asking'
+        d: 'Minding his own business, so stap asking',
       },
-      correctAnswer: 'd'
+      correctAnswer: 'd',
     },
     {
       question: 'Whose stage introduction starts with You Wanted the Best',
@@ -42,15 +45,13 @@
         a: 'Who',
         b: 'KISS',
         c: 'Incubus',
-        d: 'Tool'
+        d: 'Tool',
       },
-      correctAnswer: 'b'
-    }
+      correctAnswer: 'b',
+    },
   ];
 
-  /*
-   * build the Quiz
-   */
+  // 2- build the Quiz
   function buildQuiz() {
     const output = [];
 
@@ -76,21 +77,17 @@
       );
     }); // end .forEach() on quizQuestions
 
-    // render the quiz array as a joined string of markup
+    // render the quiz array as a joined string of markup, using DOM innerHTML property
     quizRoot.innerHTML = output.join('');
   }
 
-  /*
-   * show the Results
-   */
+  // 3- show the Results
   function showResults() {
-    // 1- dom select all answer nodes from our quiz -- you know have nodelist
+    // a- get a nodelist of answers
     const answerNodes = quizRoot.querySelectorAll('.answers');
-
-    // 2- keep track of user correct answers with a simple counter var
     let numCorrect = 0;
 
-    // 3- .forEach question, find the selected answer
+    // b- find selected answer for each question
     // (uses a dom selector on the input with :checked)
     answerNodes.forEach((currentQuestion, questionNumber) => {
       const answerNode = answerNodes[questionNumber];
@@ -98,8 +95,7 @@
         'input[name=question' + questionNumber + ']:checked';
       const userAnswer = (answerNode.querySelector(radioSelector) || {}).value;
 
-      // 4- for each answer - the elem in the forEach, evaluate if it is correct answer
-      // 4a - if correct, up the correct answer counter and color the text green;
+      // c- evaluate for correct answer and style accordingly
       if (userAnswer === quizQuestions[questionNumber].correctAnswer) {
         numCorrect++;
         answerNodes[questionNumber].classList.add('answer__correct');
@@ -107,29 +103,23 @@
         answerNodes[questionNumber].classList.add('answer__incorrect');
       }
     });
-    // 5- render the num of correct answers of the total (uses value of counter, questions.length
-    resultsContainer.innerHTML = `${numCorrect} out of ${
-      quizQuestions.length
-    } correct!`;
+    // 5- render the num of correct answers of the total
+    resultsContainer.innerHTML = `${numCorrect} out of ${quizQuestions.length} correct!`;
   }
 
-  /*
-   * Show Slide Logic (Pages of the Quiz)
-   */
+  // Show Slide Logic (Pages of the Quiz)
   function showSlide(n) {
     // 1- hide current slide
     slides[currentSlide].classList.remove('slide__active');
     // 2- show slide for whatever n got passed in
     slides[n].classList.add('slide__active');
-    // now reset current slide
+    // reset current slide
     currentSlide = n;
 
     // first slide ui - conditionals for the buttons
-    if (currentSlide === 0) {
-      previousButton.style.display = 'none';
-    } else {
-      previousButton.style.display = 'inline-block';
-    }
+    currentSlide === 0
+      ? (previousButton.style.display = 'none')
+      : (previousButton.style.display = 'inline-block');
 
     // last slide ui - conditionals for the buttons
     if (currentSlide === slides.length - 1) {
@@ -154,7 +144,7 @@
   const resultsContainer = document.querySelector('#results');
   const submitButton = document.querySelector('#submitButton');
 
-  // display quiz right away - moving away from DOMContentLoaded event listeners as WE are building the DOM
+  // display quiz - moving away from DOMContentLoaded event listener as WE are building the DOM
   buildQuiz();
 
   // pagination vars
@@ -167,8 +157,9 @@
   showSlide(0);
 
   // Event Handlers
-  //document.addEventListener('DOMContentLoaded', buildQuiz);
   submitButton.addEventListener('click', showResults);
   nextButton.addEventListener('click', showNextSlide);
   previousButton.addEventListener('click', showPrevSlide);
+
+  // TODO: remove event listeners to avoid JS memory leak
 })();

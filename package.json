@@ -1,5 +1,5 @@
 {
-  "name": "J2-Simple-JS-Quiz",
+  "name": "simple-js-quiz",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "http-server": "^0.11.1"
+    "http-server": "^0.11.1",
+    "nodemon": "^2.0.4"
   }
 }

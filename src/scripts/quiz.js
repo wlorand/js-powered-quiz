@@ -105,6 +105,8 @@
     });
     // 5- render the num of correct answers of the total
     resultsContainer.innerHTML = `${numCorrect} out of ${quizQuestions.length} correct!`;
+
+    // 6- TODO: show all slides when showing results
   }
 
   // Show Slide Logic (Pages of the Quiz)

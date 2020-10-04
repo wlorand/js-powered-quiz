@@ -1,3 +1,3 @@
-# Vanilla JS Powered Quiz
+# JS Powered Quiz
 
-## -- uses DOM Methods, JSON Data, ES6 template strings (2017+2020)
+## a Vanilla JS Powered Quiz UI - Manual DOM API, JSON Data, ES6 template strings (2017+2020)
